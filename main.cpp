@@ -6,6 +6,22 @@
 using json = nlohmann::json;
 
 int main() {
+
+    // 環境変数 PORT からポート番号を取得します。
+    // Render環境では、Renderがこの環境変数を自動で設定してくれます。
+    // ローカル環境でテストする際は、この環境変数が設定されていないため、
+    // デフォルト値として 8080 を使用します。
+    int port = 8080; // デフォルトポート
+    if (const char* env_port = std::getenv("PORT")) {
+        try {
+            port = std::stoi(env_port);
+        } catch (const std::exception& e) {
+            std::cerr << "PORT環境変数の読み取りに失敗しました: " << e.what() << std::endl;
+            // エラーの場合はデフォルトポートを使用
+        }
+    }
+
+
     httplib::Server svr;
 
     svr.Options("/api/lcs", [](const httplib::Request&, httplib::Response& res) {
@@ -35,7 +51,8 @@ int main() {
         }
     });
 
-    std::cout << "Server is starting on port 8080..." << std::endl;
-    svr.listen("0.0.0.0", 8080);
+    std::cout << "Server is starting on port " << port << "..." << std::endl;
+    // 取得したポート番号でサーバーを起動
+    svr.listen("0.0.0.0", port);
     return 0;
 }
