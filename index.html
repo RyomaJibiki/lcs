@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCS計算アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>最長共通部分列 (LCS) 計算</h1>
+        <div class="input-group">
+            <label for="str1">文字列 1</label>
+            <textarea id="str1" rows="4" placeholder="比較する文字列を入力..."></textarea>
+        </div>
+        <div class="input-group">
+            <label for="str2">文字列 2</label>
+            <textarea id="str2" rows="4" placeholder="比較する文字列を入力..."></textarea>
+        </div>
+        <button id="calcButton">計算実行</button>
+        <div class="result-container">
+            <h2>結果</h2>
+            <div id="result">
+                <p>ここに計算結果が表示されます。</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
