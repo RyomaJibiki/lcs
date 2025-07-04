@@ -13,7 +13,7 @@ COPY . .
 RUN make
 
 # サーバーが使用するポートを公開
-EXPOSE 8080
+EXPOSE 10000
 
 # コンテナ起動時に実行するコマンド
 CMD ["./server"]
