@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // FlaskサーバーのAPIにリクエストを送信
             // このURLは、app.pyを実行しているサーバーのアドレスです
-            const response = await fetch('https://lcs-i0t7.onrender.com/api/lcs', {
+            const response = await fetch('https://lcs2.onrender.com/api/lcs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
