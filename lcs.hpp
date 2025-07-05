@@ -8,4 +8,4 @@
 #include <codecvt>
 
 // LCS計算アルゴリズムの関数宣言
-std::string find_lcs_optimized(const std::string& s, const std::string& t);
+std::pair<std::string, int> find_lcs_optimized(const std::string& s, const std::string& t);
