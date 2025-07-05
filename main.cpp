@@ -45,12 +45,11 @@ int main() {
             std::string s2 = data["s2"];
 
             // LCSを計算
-            std::string lcs_result = find_lcs_optimized(s1, s2);
+            std::pair<std::string, int> lcs_result = find_lcs_optimized(s1, s2);
 
-            // レスポンス用のJSONを作成
             json response_json;
-            response_json["lcs"] = lcs_result;
-            response_json["length"] = lcs_result.length();
+            response_json["lcs"] = lcs_result.first;
+            response_json["length"] = lcs_result.second;
 
             // レスポンスヘッダーにCORS許可とJSON形式であることを設定
             res.set_header("Access-Control-Allow-Origin", "*");
