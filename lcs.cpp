@@ -76,14 +76,16 @@ std::wstring lcs_recursive_optimized(const std::wstring& s, const std::wstring& 
 }
 
 // 呼び出し元の関数の実装
-std::string find_lcs_optimized(const std::string& s, const std::string& t) {
+std::pair<std::string, int> find_lcs_optimized(const std::string& s, const std::string& t) {
 
     std::wstring ws = string_to_wstring_linux(s);
     std::wstring wt = string_to_wstring_linux(t);
 
     if (ws.length() > wt.length()) {
-        return wstring_to_string_linux(lcs_recursive_optimized(wt, ws));
+        std::wstring ans = lcs_recursive_optimized(wt, ws);
+        return {wstring_to_string_linux(ans), ans.length()};
     } else {
-        return wstring_to_string_linux(lcs_recursive_optimized(ws, wt));
+        std::wstring ans = lcs_recursive_optimized(ws, wt);
+        return {wstring_to_string_linux(ans), ans.length()};
     }
 }
