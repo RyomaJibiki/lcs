@@ -30,7 +30,8 @@ std::vector<int> calculate_lcs_lengths(const std::wstring& s, const std::wstring
         std::vector<int> next_dp = dp;
         for (int j = 0; j < n; ++j) {
             if (t[i] == s[j]) {
-                next_dp[j + 1] = std::max(next_dp[j + 1], dp[j] + 1);
+                //next_dp[j + 1] = std::max(next_dp[j + 1], dp[j] + 1);
+                next_dp[j + 1] = dp[j] + 1;
             } else {
                 next_dp[j + 1] = std::max(dp[j + 1], next_dp[j]);
             }
