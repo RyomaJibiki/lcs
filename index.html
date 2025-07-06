@@ -17,6 +17,18 @@
             <label for="str2">文字列 2</label>
             <textarea id="str2" rows="4" placeholder="比較する文字列を入力..."></textarea>
         </div>
+        <button id="toggle-btn">▶ オプション</button>
+
+        <div id="options-div" hidden>
+        <p>
+        LCSの計算に用いるプログラミング言語
+        <label><input type="radio" name="language" value="cpp" id="radio-cpp" checked>C++</label>
+
+        <label><input type="radio" name="language" value="py" id="radio-py">Python</label>
+        </p>
+        </div>
+
+        
         <button id="calcButton">計算実行</button>
         <div class="result-container">
             <h2>結果</h2>
