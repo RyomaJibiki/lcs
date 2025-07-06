@@ -1,21 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // HTML の読み込みが完了してから実行
     const calcButton = document.getElementById('calcButton');
     const str1Input = document.getElementById('str1');
     const str2Input = document.getElementById('str2');
     const resultDiv = document.getElementById('result');
 
+    const toggleBtn = document.getElementById('toggle-btn');
+    const optionsDiv = document.getElementById('options-div');
+
+    toggleBtn.addEventListener('click', () => {
+            // 3. オプション表示をトグル（表示・非表示を切り替え）
+            optionsDiv.hidden = !optionsDiv.hidden;
+
+            // 4. 表示状態に応じてボタンのテキストを変更
+            if (optionsDiv.hidden) {
+                // 非表示の場合
+                toggleBtn.textContent = '▶ オプション';
+            } else {
+                // 表示中の場合
+                toggleBtn.textContent = '▼ オプション';
+            }
+    });
+
+
     calcButton.addEventListener('click', async () => {
         const s1 = str1Input.value;
         const s2 = str2Input.value;
 
+        const isCppSelected = document.getElementById('radio-cpp').checked;
+        
         // ボタンを無効化し、計算中メッセージを表示
         calcButton.disabled = true;
         resultDiv.innerHTML = '<p>計算中...</p>';
 
         try {
-            // FlaskサーバーのAPIにリクエストを送信
-            // このURLは、app.pyを実行しているサーバーのアドレスです
-            const response = await fetch('https://lcs2.onrender.com/api/lcs', {
+            url = '';
+
+            if(isCppSelected){
+                url = 'https://lcs2.onrender.com/api/lcs';
+            }else{
+                url = 'https://lcs-i0t7.onrender.com/api/lcs';
+            }
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 結果を表示
             resultDiv.innerHTML = `
-                <p><strong>LCS:</strong> "${data.lcs}"</p>
                 <p><strong>長さ:</strong> ${data.length}</p>
+                <p><strong>LCS:</strong> "${data.lcs}"</p>
             `;
 
         } catch (error) {
