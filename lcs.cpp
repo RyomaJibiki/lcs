@@ -19,36 +19,40 @@ std::string wstring_to_string_linux(const std::wstring& wstr) {
 }
 
 
-
-// ヘルパー関数の実装
+// lcsを動的計画法で計算
+// 動的計画法のテーブルの右端の列を返す
 std::vector<int> calculate_lcs_lengths(const std::wstring& s, const std::wstring& t) {
     int n = s.length();
     int m = t.length();
     std::vector<int> dp(n + 1, 0);
 
     for (int i = 0; i < m; ++i) {
-        std::vector<int> next_dp = dp;
+        int preb_dp_j = dp[0];
         for (int j = 0; j < n; ++j) {
+            int preb_dp_j_plus_1 = dp[j + 1];
             if (t[i] == s[j]) {
                 //next_dp[j + 1] = std::max(next_dp[j + 1], dp[j] + 1);
-                next_dp[j + 1] = dp[j] + 1;
+                dp[j + 1] = preb_dp_j + 1;
             } else {
-                next_dp[j + 1] = std::max(dp[j + 1], next_dp[j]);
+                dp[j + 1] = std::max(dp[j + 1], dp[j]);
             }
         }
-        dp = next_dp;
+        preb_dp_j = preb_dp_j_plus_1;
     }
     return dp;
 }
 
 // 再帰関数の実装
+// Hirschberg's algorithm を用いて，lcsを計算
 std::wstring lcs_recursive_optimized(const std::wstring& s, const std::wstring& t) {
     int n = s.length();
     int m = t.length();
 
+    // 与えられた文字列のどちらか（もしくは両方）が空であるとき，""を返す
     if (n == 0 || m == 0) return L"";
+    // 文字列tが一文字であるとき，文字列sにその文字含まれていれば，その文字を返し，そうでなければ""を返す
     if (m == 1) return (s.find(t[0]) != std::wstring::npos) ? t.substr(0, 1) : L"";
-
+ 
     int mid = m / 2;
     std::wstring t1 = t.substr(0, mid);
     std::wstring t2 = t.substr(mid);
@@ -76,7 +80,8 @@ std::wstring lcs_recursive_optimized(const std::wstring& s, const std::wstring& 
     return part1 + part2;
 }
 
-// 呼び出し元の関数の実装
+// string型を wstring型に変更して，lcsとその長さを計算
+// lcs を string型に直して，lcs とその長さを返す 
 std::pair<std::string, int> find_lcs_optimized(const std::string& s, const std::string& t) {
 
     std::wstring ws = string_to_wstring_linux(s);
