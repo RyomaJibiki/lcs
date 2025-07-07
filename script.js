@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(isCppSelected){
                 url = 'https://lcs2.onrender.com/api/lcs';
             }else{
-                url = 'https://lcs-i0t7.onrender.com/api/lcs';
+                url = 'https://lcs-73wu.onrender.com/api/lcs';
             }
 
             const response = await fetch(url, {
