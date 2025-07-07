@@ -1,25 +1,27 @@
 # app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 
-# --- ここからLCS計算アルゴリズム (変更なし) ---
 def _calculate_lcs_lengths(s: str, t: str) -> list[int]:
     n = len(s)
     m = len(t)
     dp = [0] * (n + 1)
     for i in range(m):
-        next_dp = dp[:]
+        prev_dp_j = dp[0]
         for j in range(n):
+            prev_dp_j_plus_1 = dp[j+1]
             if t[i] == s[j]:
-                next_dp[j + 1] = max(next_dp[j + 1], dp[j] + 1)
+                dp[j + 1] = prev_dp_j + 1
             else:
-                next_dp[j + 1] = max(dp[j + 1], next_dp[j])
-        dp = next_dp
+                dp[j + 1] = max(prev_dp_j_plus_1, dp[j])
+            prev_dp_j = prev_dp_j_plus_1
     return dp
 
 def _lcs_recursive_optimized(s: str, t: str) -> str:
     n, m = len(s), len(t)
     if n == 0: return ""
+    if m == 0: return ""
     if m == 1: return t[0] if t[0] in s else ""
     mid = m // 2
     t1, t2 = t[:mid], t[mid:]
@@ -40,7 +42,6 @@ def find_lcs_optimized(s: str, t: str) -> str:
         return _lcs_recursive_optimized(t, s)
     else:
         return _lcs_recursive_optimized(s, t)
-# --- ここまでLCS計算アルゴリズム ---
 
 
 # Flaskアプリケーションの初期化
@@ -69,6 +70,7 @@ def get_lcs():
     })
 
 # このファイルが直接実行された場合にサーバーを起動
-# if __name__ == '__main__':
-#     # 0.0.0.0を指定すると、同じネットワーク内の他のデバイスからもアクセス可能になる
-#     app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    # debug=Trueは開発時のみ有効にし、本番環境ではFalseにするのが望ましい
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('ENV') != 'production')
