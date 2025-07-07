@@ -9,11 +9,8 @@
 using json = nlohmann::json;
 
 int main() {
-    // --- ★修正箇所 START★ ---
-    // 環境変数 PORT からポート番号を取得します。
-    // Render環境では、Renderがこの環境変数を自動で設定してくれます。
-    // ローカル環境でテストする際は、この環境変数が設定されていないため、
-    // デフォルト値として 8080 を使用します。
+
+    // ポート番号の決定
     int port = 8080; // デフォルトポート
     if (const char* env_port = std::getenv("PORT")) {
         try {
@@ -23,15 +20,17 @@ int main() {
             // エラーの場合はデフォルトポートを使用
         }
     }
-    // --- ★修正箇所 END★ ---
 
     // HTTPサーバーのインスタンスを作成
     httplib::Server svr;
 
     // CORSの事前確認(Preflight)リクエストに対応するための設定
     svr.Options("/api/lcs", [](const httplib::Request&, httplib::Response& res) {
+        // どのオリジン（ドメイン）からのリクエストを許可するか
         res.set_header("Access-Control-Allow-Origin", "*");
+        // 実際にリクエストで許可するHTTPヘッダー
         res.set_header("Access-Control-Allow-Headers", "Content-Type");
+        // 実際のリクエストで許可するHTTPメソッド
         res.set_header("Access-Control-Allow-Methods", "POST, OPTIONS");
         res.status = 200;
     });
@@ -39,7 +38,8 @@ int main() {
     // POSTリクエストを処理するハンドラを設定
     svr.Post("/api/lcs", [](const httplib::Request& req, httplib::Response& res) {
         try {
-            // リクエストボディからJSONをパース
+            // リクエストボディからJSONをパース(構文解析)
+            // 例）"{\"s1\":\"hello\",\"s2\":\"world\"}" → {"s1": "hello", "s2": "world"}
             json data = json::parse(req.body);
             std::string s1 = data["s1"];
             std::string s2 = data["s2"];
@@ -51,8 +51,9 @@ int main() {
             response_json["lcs"] = lcs_result.first;
             response_json["length"] = lcs_result.second;
 
-            // レスポンスヘッダーにCORS許可とJSON形式であることを設定
+            // レスポンスデータのアクセス許可
             res.set_header("Access-Control-Allow-Origin", "*");
+            // シリアライズ（パースの逆），Content-Type を application/json に設定
             res.set_content(response_json.dump(), "application/json");
 
         } catch (const std::exception& e) {
@@ -61,11 +62,8 @@ int main() {
         }
     });
 
-    // --- ★修正箇所 START★ ---
     std::cout << "Server is starting on port " << port << "..." << std::endl;
-    // 取得したポート番号でサーバーを起動
     svr.listen("0.0.0.0", port);
-    // --- ★修正箇所 END★ ---
 
     return 0;
 }
