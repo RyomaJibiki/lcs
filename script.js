@@ -4,9 +4,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const str1Input = document.getElementById('str1');
     const str2Input = document.getElementById('str2');
     const resultDiv = document.getElementById('result');
+    const count1 = document.getElementById('count1');
+    const count2 = document.getElementById('count2');
+    const clear1Button = document.getElementById('clear1Button');
+    const clear2Button = document.getElementById('clear2Button');
 
     const toggleBtn = document.getElementById('toggle-btn');
     const optionsDiv = document.getElementById('options-div');
+
+
+    clear1Button.addEventListener('click', () => {
+        str1Input.value = '';
+        count1.textContent = '0 文字';
+        str1Input.focus();
+    });
+
+    clear2Button.addEventListener('click', () => {
+        str2Input.value = '';
+        count2.textContent = '0 文字';
+        str2Input.focus();
+    });
+
+    str1Input.addEventListener('input', () => {
+        count1.textContent = `${str1Input.value.length} 文字`;
+    });
+    str2Input.addEventListener('input', () => {
+        count2.textContent = `${str2Input.value.length} 文字`;
+    });
 
     toggleBtn.addEventListener('click', () => {
             // 3. オプション表示をトグル（表示・非表示を切り替え）
