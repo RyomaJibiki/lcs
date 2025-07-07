@@ -36,8 +36,8 @@ std::vector<int> calculate_lcs_lengths(const std::wstring& s, const std::wstring
             } else {
                 dp[j + 1] = std::max(dp[j + 1], dp[j]);
             }
+            preb_dp_j = preb_dp_j_plus_1;
         }
-        preb_dp_j = preb_dp_j_plus_1;
     }
     return dp;
 }
