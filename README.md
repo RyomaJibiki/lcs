@@ -22,7 +22,7 @@
 
 ### 方法1：
 1. フロントエンドのURLにアクセス  
-   → [https://lcs-1.onrender.com]を開いて使用
+   → [https://lcs-1.onrender.com] を開いて使用
 
 ### 方法2：
 1. `lcs` フォルダ内の `index.html` をブラウザで開く
